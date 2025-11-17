@@ -63,13 +63,48 @@ footer {
   padding: 2rem;
   color: #fff;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(135deg, #1a0000, #000);
+  background: linear-gradient(135deg, #000000, #a30000);
   min-height: 100vh;
 }
+
 
 h1, h2 {
   color: #fff;
   text-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+}
+
+/* ======== BOTÕES DE AÇÃO ======== */
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.action-btn {
+  background: #800000;
+  border: none;
+  color: white;
+  padding: 12px 22px;
+  font-size: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.action-btn:hover {
+  background: #b30000;
+  transform: scale(1.06);
+}
+
+/* Áreas ocultáveis */
+.hidden-section {
+  display: none;
+}
+
+.visible-section {
+  display: block;
 }
 
 /* ======== COLAGEM DE ÁLBUNS ======== */
@@ -97,20 +132,20 @@ h1, h2 {
   transform: rotate(-0.3deg);
   margin: 0 auto;
   max-width: 700px;
-  gap: 2px; /* efeito de recorte entre capas */
+  gap: 2px;
 }
 
 /* Configurações para 2x2 e 3x3 */
 .grid-2x2 {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  aspect-ratio: 1 / 1; /* mantém quadrado automático */
+  aspect-ratio: 1 / 1;
 }
 
 .grid-3x3 {
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  aspect-ratio: 1 / 1; /* evita corte vertical */
+  aspect-ratio: 1 / 1;
 }
 
 /* Imagens da colagem */
@@ -127,17 +162,17 @@ h1, h2 {
 .collage-img:nth-child(odd) {
   transform: rotate(-1.2deg);
 }
+
 .collage-img:nth-child(even) {
   transform: rotate(0.8deg);
 }
 
-/* Hover de destaque */
+/* Hover */
 .collage-img:hover {
   transform: scale(1.08);
   filter: brightness(110%) saturate(130%);
   z-index: 10;
 }
-
 
 /* ======== PLAYLISTS ======== */
 section {
@@ -147,3 +182,91 @@ section {
 a {
   text-decoration: none;
 }
+
+.info-container h3 {
+  margin-top: 20px;
+  color: #fff;
+  font-size: 22px;
+}
+
+.track-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.track-image {
+  width: 55px;
+  height: 55px;
+  border-radius: 6px;
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.track-rank {
+  font-weight: bold;
+  color: #ff4444;
+  margin: 0;
+}
+
+.track-name {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.track-artist {
+  margin: 0;
+  color: #ddd;
+  font-size: 14px;
+}
+
+.track-duration {
+  margin: 0;
+  color: #bbb;
+  font-size: 13px;
+}
+/* Container da faixa */
+.track-card {
+  position: relative;
+  padding-bottom: 50px; /* espaço para o botão */
+}
+
+/* Botão OUVIR AGORA à direita com tamanho fixo */
+.play-button {
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+
+  width: 160px;        /* tamanho fixo */
+  text-align: center;
+
+  padding: 10px 0;
+  background: #1db954;
+  color: white;
+  border-radius: 30px;
+
+  font-size: 15px;
+  font-weight: bold;
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+
+  transition: 0.2s;
+}
+
+.play-button:hover {
+  background: #17a443;
+  transform: scale(1.05);
+}
+
