@@ -13,19 +13,72 @@ function App() {
 
   const [activeSection, setActiveSection] = useState("account");
 
-  // Função para exportar colagens
-  const exportarColagem = async (id) => {
-    const elemento = document.getElementById(id);
-    if (!elemento) return;
+  // Requer html2canvas instalado: npm install html2canvas
+const exportarColagem = async (id) => {
+  const elemento = document.getElementById(id);
+  if (!elemento) {
+    console.warn("Elemento para exportar não encontrado:", id);
+    return;
+  }
 
-    const canvas = await html2canvas(elemento, { scale: 3 });
+  // 1) pega todas as imagens dentro do elemento e garante crossOrigin + aguarda carregamento
+  const imgs = Array.from(elemento.querySelectorAll("img"));
+
+  // se não houver imagens, ainda assim tenta capturar
+  try {
+    await Promise.all(
+      imgs.map((img) => {
+        return new Promise((resolve) => {
+          // se já tiver crossOrigin definido, ótimo; se não, define
+          try { img.crossOrigin = img.crossOrigin || "anonymous"; } catch(e){}
+
+          if (img.complete && img.naturalWidth !== 0) {
+            return resolve();
+          }
+          // em caso de erro, resolve também (para não travar)
+          img.onload = () => resolve();
+          img.onerror = () => {
+            console.warn("Falha no carregamento de imagem (continuando):", img.src);
+            resolve();
+          };
+        });
+      })
+    );
+  } catch (err) {
+    console.warn("Erro esperando imagens:", err);
+  }
+
+  // 2) captura com html2canvas com opções CORS-friendly
+  try {
+    const canvas = await html2canvas(elemento, {
+      useCORS: true,
+      allowTaint: false,
+      backgroundColor: null, // mantém background visível
+      scale: 3,
+      logging: false,
+      onclone: (clonedDoc) => {
+        // remove transform indesejado no clone caso cause problemas (opcional)
+        const clonedEl = clonedDoc.getElementById(id);
+        if (clonedEl) {
+          clonedEl.style.transform = "none";
+        }
+      },
+    });
+
     const url = canvas.toDataURL("image/png");
-
     const link = document.createElement("a");
     link.href = url;
     link.download = `${id}.png`;
     link.click();
-  };
+  } catch (err) {
+    console.error("Erro ao gerar imagem com html2canvas:", err);
+    alert(
+      "Não foi possível gerar a imagem. Possível causa: restrição CORS das imagens (Spotify).\n" +
+        "Soluções: usar um servidor proxy CORS ou baixar as imagens para um servidor próprio."
+    );
+  }
+};
+
 
   useEffect(() => {
     async function initApp() {
