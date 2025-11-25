@@ -104,12 +104,12 @@ const exportarColagem = async (id) => {
   if (!token) {
     return (
       <div className="login-screen">
-        <h1>🎵 Spotify Academic App</h1>
-        <p>Explore suas músicas e playlists favoritas com estilo 🔥</p>
+        <h1>Welcome</h1>
+        <p>Click here to see your Spotify bundle</p>
         <button onClick={login} className="login-button">
-          Login com Spotify
+          Connect account
         </button>
-        <footer>© {new Date().getFullYear()} Projeto Acadêmico</footer>
+        <footer>© {new Date().getFullYear()} Academic project</footer>
       </div>
     );
   }
@@ -140,16 +140,16 @@ const exportarColagem = async (id) => {
         </button>
       </div>
 
-      <h1>🎵 Spotify Academic App</h1>
+      <h1></h1>
 
       {/* BOTÕES DE NAVEGAÇÃO */}
       <div style={{ display: "flex", gap: "15px", marginBottom: "25px" }}>
         <button onClick={() => setActiveSection("account")} className="toggle-button">
-          Informações da Conta
+          Most listened
         </button>
 
         <button onClick={() => setActiveSection("collages")} className="toggle-button">
-          Colagens de Álbuns
+          Album collage
         </button>
 
         <button onClick={() => setActiveSection("playlists")} className="toggle-button">
@@ -162,17 +162,16 @@ const exportarColagem = async (id) => {
       {/* ===================================================== */}
       {activeSection === "account" && (
         <section style={{ marginBottom: "30px" }}>
-          <h2>📘 Informações da Conta</h2>
-
-          <p><strong>Total de faixas analisadas:</strong> {topTracks.length}</p>
-          <p><strong>Total de playlists:</strong> {playlists.length}</p>
+          <h2></h2>
 
           <br />
 
-          <h3>🎧 Top 10 músicas mais escutadas</h3>
+          <h3></h3>
+
+          <h1 className="pop-out">Let's see the results!</h1>
 
           {loadingTracks ? (
-            <p>Carregando músicas...</p>
+            <p>Loading songs</p>
           ) : (
             topTracks.map((track, index) => (
               <div key={track.id} className="track-card">
@@ -183,6 +182,7 @@ const exportarColagem = async (id) => {
                 />
 
                 <div className="track-info">
+
   <p className="track-rank">#{index + 1}</p>
 
   <p className="track-name">{track.name}</p>
@@ -226,6 +226,7 @@ const exportarColagem = async (id) => {
               <p>Carregando álbuns...</p>
             ) : (
               <>
+
                 <div id="collage-2x2" className="collage-grid grid-2x2">
                   {topTracks.slice(0, 4).map((track) => (
                     <img
@@ -241,7 +242,7 @@ const exportarColagem = async (id) => {
                   onClick={() => exportarColagem("collage-2x2")}
                   className="download-button"
                 >
-                  📥 Baixar colagem 2x2
+                  Download collage 2x2
                 </button>
               </>
             )}
