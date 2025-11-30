@@ -4,6 +4,64 @@ import { APIController } from "./apiController";
 import html2canvas from "html2canvas";
 import "./App.css";
 
+let slideCount = 0;
+
+
+function slideButtonRight() {
+
+    if (slideCount < 2) {
+        slideCount += 1;
+        updatePos();
+    }
+}
+
+function slideButtonLeft() {
+
+    if (slideCount > 0) {
+        slideCount -= 1;
+        updatePos();
+    }
+}
+
+function updatePos(){
+
+    const slideContainer = document.getElementById('slideContainer');
+    const collage2x2 = document.getElementById('collage-2x2');
+    const collage3x3 = document.getElementById('collage-3x3');
+    const collage4x4 = document.getElementById('collage-4x4');
+
+    if (slideCount === 1) {
+        slideContainer.style.transform = `translateX(-18vw)`;
+        collage2x2.style = `width: 30vw;
+                            transform: translateY(10vh);`;
+        collage3x3.style = `width: 40vw;
+                            transform: translateY(-10vh);`;
+        collage4x4.style = `width: 30vw;
+                            transform: translateY(10vh);`;
+    }
+    if (slideCount === 2) {
+        slideContainer.style.transform = `translateX(-63vw)`;
+        collage2x2.style = `width: 30vw;
+                            transform: translateY(10vh);`;
+        collage3x3.style = `width: 30vw;
+                            transform: translateY(10vh);`;
+        collage4x4.style = `width: 40vw;
+                            transform: translateY(-10vh);`;
+    }
+    if (slideCount === 0) {
+        slideContainer.style.transform = `translateX(26vw)`;
+        collage2x2.style = `width: 40vw;
+                            transform: translateY(-10vh);`;
+        collage3x3.style = `width: 30vw;
+                            transform: translateY(10vh);`;
+        collage4x4.style = `width: 30vw;
+                            transform: translateY(10vh);`;
+    }
+}
+
+//document.getElementById("Box1").textContent = slideCount;
+
+
 function App() {
   const [token, setToken] = useState(null);
   const [topTracks, setTopTracks] = useState([]);
@@ -15,6 +73,15 @@ function App() {
 
   // Requer html2canvas instalado: npm install html2canvas
 const exportarColagem = async (id) => {
+  if (id === 0) {
+    id = "collage-2x2"
+  }
+  if (id === 1) {
+    id = "collage-3x3"
+  }
+  if (id === 2) {
+    id = "collage-4x4"
+  }
   const elemento = document.getElementById(id);
   if (!elemento) {
     console.warn("Elemento para exportar não encontrado:", id);
@@ -104,10 +171,10 @@ const exportarColagem = async (id) => {
   if (!token) {
     return (
       <div className="login-screen">
-        <h1>Welcome</h1>
-        <p>Click here to see your Spotify bundle</p>
+        <h1>How's your music taste <br></br>going?</h1>
+        <p>Click down below to generate your Spotify bundle.</p>
         <button onClick={login} className="login-button">
-          Connect account
+          Connect Spotify
         </button>
         <footer>© {new Date().getFullYear()} Academic project</footer>
       </div>
@@ -116,245 +183,256 @@ const exportarColagem = async (id) => {
 
   // ================= APP PRINCIPAL =================
   return (
-    <div className="app-container">
 
-      {/* LOGOUT */}
-      <div style={{ position: "fixed", top: "15px", right: "15px", zIndex: 9999 }}>
-        <button
-          onClick={() => {
-            localStorage.removeItem("spotify_access_token");
-            window.location.href = "/";
-          }}
-          style={{
-            backgroundColor: "#e53935",
-            border: "none",
-            padding: "10px 18px",
-            color: "white",
-            borderRadius: "8px",
-            cursor: "pointer",
-            fontWeight: "bold",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.3)"
-          }}
-        >
-          Logout
-        </button>
-      </div>
+    
+      <div className="app-container">
 
-      <h1></h1>
+        <h1 className="pop-out"> Let's see the results!</h1>
+        {/* LOGOUT */}
+        <div style={{ position: "fixed", top: "15px", right: "15px", zIndex: 9999 }}>
+          <button
+            onClick={() => {
+              localStorage.removeItem("spotify_access_token");
+              window.location.href = "/";
+            }}
+            style={{
+              backgroundColor: "#e535b0ff",
+              border: "none",
+              padding: "10px 18px",
+              color: "white",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontWeight: "bold",
+              boxShadow: "0 4px 8px rgba(0,0,0,0.3)"
+            }}
+          >
+            Logout
+          </button>
+        </div>
 
-      {/* BOTÕES DE NAVEGAÇÃO */}
-      <div style={{ display: "flex", gap: "15px", marginBottom: "25px" }}>
-        <button onClick={() => setActiveSection("account")} className="toggle-button">
-          Most listened
-        </button>
+        <h1></h1>
 
-        <button onClick={() => setActiveSection("collages")} className="toggle-button">
-          Album collage
-        </button>
+        {/* BOTÕES DE NAVEGAÇÃO */}
+        <div className="button-group">
+          <button onClick={() => setActiveSection("account")} className="toggle-button">
+            Top Listened
+          </button>
 
-        <button onClick={() => setActiveSection("playlists")} className="toggle-button">
-          Minhas Playlists
-        </button>
-      </div>
+          <button onClick={() => { setActiveSection("collages")}} className="toggle-button">
+            Album collage
+          </button>
 
-      {/* ===================================================== */}
-      {/* INFORMAÇÕES DA CONTA */}
-      {/* ===================================================== */}
-      {activeSection === "account" && (
-        <section style={{ marginBottom: "30px" }}>
-          <h2></h2>
+          <button onClick={() => setActiveSection("playlists")} className="toggle-button">
+            My Playlists
+          </button>
+        </div>
 
-          <br />
+        <br></br>
+        <br></br>
 
-          <h3></h3>
+        {/* ===================================================== */}
+        {/* INFORMAÇÕES DA CONTA */}
+        {/* ===================================================== */}
+        {activeSection === "account" && (
+          <section style={{ marginBottom: "30px" }}>
+            <h2></h2>
 
-          <h1 className="pop-out">Let's see the results!</h1>
+            <br />
 
-          {loadingTracks ? (
-            <p>Loading songs</p>
-          ) : (
-            topTracks.map((track, index) => (
-              <div key={track.id} className="track-card">
-                <img
-                  src={track.album.images?.[2]?.url}
-                  alt={track.name}
-                  className="track-image"
-                />
-
-                <div className="track-info">
-
-  <p className="track-rank">#{index + 1}</p>
-
-  <p className="track-name">{track.name}</p>
-
-  <p className="track-artist">
-    {track.artists.map((a) => a.name).join(", ")}
-  </p>
-
-  <p className="track-duration">
-    {Math.floor(track.duration_ms / 60000)}:
-    {String(Math.floor((track.duration_ms % 60000) / 1000)).padStart(2, "0")}
-  </p>
-
-  {/* BOTÃO OUVIR AGORA */}
-  <a
-    href={track.external_urls.spotify}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="play-button"
-  >
-    ▶️ Ouvir agora
-  </a>
-</div>
-
-              </div>
-            ))
-          )}
-        </section>
-      )}
-
-      {/* ===================================================== */}
-      {/* COLAGENS */}
-      {/* ===================================================== */}
-      {activeSection === "collages" && (
-        <>
-
-          {/* COLAGEM 2x2 */}
-          <section className="album-collage-section">
-            <h2>🎧 Colagem 2x2 - Álbuns mais escutados</h2>
             {loadingTracks ? (
-              <p>Carregando álbuns...</p>
+              <p></p>
             ) : (
-              <>
-
-                <div id="collage-2x2" className="collage-grid grid-2x2">
-                  {topTracks.slice(0, 4).map((track) => (
-                    <img
-                      key={track.id}
-                      src={track.album?.images?.[0]?.url}
-                      alt={track.name}
-                      className="collage-img"
-                    />
-                  ))}
-                </div>
-
-                <button
-                  onClick={() => exportarColagem("collage-2x2")}
-                  className="download-button"
-                >
-                  Download collage 2x2
-                </button>
-              </>
-            )}
-          </section>
-
-          {/* COLAGEM 3x3 */}
-          <section className="album-collage-section">
-            <h2>🎵 Colagem 3x3 - Mais tocadas recentemente</h2>
-            {loadingTracks ? (
-              <p>Carregando álbuns...</p>
-            ) : (
-              <>
-                <div id="collage-3x3" className="collage-grid grid-3x3">
-                  {topTracks.slice(0, 9).map((track) => (
-                    <img
-                      key={track.id}
-                      src={track.album?.images?.[0]?.url}
-                      alt={track.name}
-                      className="collage-img"
-                    />
-                  ))}
-                </div>
-
-                <button
-                  onClick={() => exportarColagem("collage-3x3")}
-                  className="download-button"
-                >
-                  📥 Baixar colagem 3x3
-                </button>
-              </>
-            )}
-          </section>
-
-        </>
-      )}
-
-      {/* ===================================================== */}
-      {/* PLAYLISTS */}
-      {/* ===================================================== */}
-      {activeSection === "playlists" && (
-        <section>
-          <h2>📀 Minhas Playlists</h2>
-          {loadingPlaylists ? (
-            <p>Carregando playlists...</p>
-          ) : playlists.length === 0 ? (
-            <p>Não encontramos playlists.</p>
-          ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-                gap: "20px",
-                marginTop: "20px",
-              }}
-            >
-              {playlists.map((pl) => (
-                <div
-                  key={pl.id}
-                  style={{
-                    border: "1px solid #ddd",
-                    borderRadius: "8px",
-                    overflow: "hidden",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
+              topTracks.map((track, index) => (
+                <div key={track.id} className="track-card">
                   <img
-                    src={pl.images?.[0]?.url || "https://via.placeholder.com/200x200"}
-                    alt={pl.name}
-                    style={{
-                      width: "100%",
-                      height: "200px",
-                      objectFit: "cover",
-                    }}
+                    src={track.album.images?.[2]?.url}
+                    alt={track.name}
+                    className="track-image"
                   />
-                  <div style={{ padding: "10px" }}>
-                    <h4
-                      style={{
-                        margin: 0,
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {pl.name}
-                    </h4>
-                    <p style={{ margin: "5px 0", color: "gray" }}>
-                      {pl.tracks.total} músicas
-                    </p>
-                    <a
-                      href={pl.external_urls.spotify}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "inline-block",
-                        marginTop: "8px",
-                        padding: "6px 12px",
-                        backgroundColor: "#1DB954",
-                        color: "white",
-                        borderRadius: "20px",
-                        textDecoration: "none",
-                      }}
-                    >
-                      Abrir no Spotify
-                    </a>
-                  </div>
+
+                  <div className="track-info">
+
+    <p className="track-rank">#{index + 1}</p>
+
+    <p className="track-name">{track.name}</p>
+
+    <p className="track-artist">
+      {track.artists.map((a) => a.name).join(", ")}
+    </p>
+
+    <p className="track-duration">
+      {Math.floor(track.duration_ms / 60000)}:
+      {String(Math.floor((track.duration_ms % 60000) / 1000)).padStart(2, "0")}
+    </p>
+
+    {/* BOTÃO OUVIR AGORA */}
+    <a
+      href={track.external_urls.spotify}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="play-button listen-button"
+    >
+      Listen now
+    </a>
+  </div>
+
                 </div>
-              ))}
+              ))
+            )}
+          </section>
+        )}
+
+        {/* ===================================================== */}
+        {/* COLAGENS */}
+        {/* ===================================================== */}
+        {activeSection === "collages" && (
+          <>
+            <h1></h1>
+            {/* COLAGEM 2x2 */}
+            <div className="collage-layout" id="slideContainer">
+              <section className="album-collage-section">
+                {loadingTracks ? (
+                  <p>Carregando álbuns...</p>
+                ) : (
+                  <>
+
+                    <div id="collage-2x2" className="collage-grid grid-2x2">
+                      {topTracks.slice(0, 4).map((track) => (
+                        <img
+                          key={track.id}
+                          src={track.album?.images?.[0]?.url}
+                          alt={track.name}
+                          className="collage-img"
+                        />
+                      ))}
+                    </div>
+
+                  </>
+                )}
+              </section>
+
+              {/* COLAGEM 3x3 */}
+              <section className="album-collage-section">
+                {loadingTracks ? (
+                  <p>Carregando álbuns...</p>
+                ) : (
+                  <>
+                    <div id="collage-3x3" className="collage-grid grid-3x3">
+                      {topTracks.slice(0, 9).map((track) => (
+                        <img
+                          key={track.id}
+                          src={track.album?.images?.[0]?.url}
+                          alt={track.name}
+                          className="collage-img"
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </section>
+
+              {/* COLAGEM 4x4 */}
+              <section className="album-collage-section">
+                {loadingTracks ? (
+                  <p>Carregando álbuns...</p>
+                ) : (
+                  <>
+                    <div id="collage-4x4" className="collage-grid grid-4x4">
+                      {topTracks.slice(0, 16).map((track) => (
+                        <img
+                          key={track.id}
+                          src={track.album?.images?.[0]?.url}
+                          alt={track.name}
+                          className="collage-img"
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </section>
+
             </div>
-          )}
-        </section>
-      )}
+
+            <div className="button-container">
+                <button className="slide-button" onClick={slideButtonLeft}>◀</button>
+                <button className="slide-button" onClick={slideButtonRight}>▶</button>
+            </div>
+
+            <button onClick={() => exportarColagem(slideCount)} className="download-button">Download this collage</button>
+
+          </>
+        )}
+
+        {/* ===================================================== */}
+        {/* PLAYLISTS */}
+        {/* ===================================================== */}
+        {activeSection === "playlists" && (
+          <section>
+            <h2>My playlists</h2>
+            {loadingPlaylists ? (
+              <p>Loading playlists</p>
+            ) : playlists.length === 0 ? (
+              <p>No playlists were found.</p>
+            ) : (
+              <div
+                className="playlist-fade"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                  gap: "20px",
+                  marginTop: "20px",
+                }}
+              >
+                {playlists.map((pl) => (
+                  <div
+                    key={pl.id}
+                    style={{
+                      border: "1px solid #ddd",
+                      borderRadius: "8px",
+                      overflow: "hidden",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <img
+                      src={pl.images?.[0]?.url || "https://via.placeholder.com/200x200"}
+                      alt={pl.name}
+                      style={{
+                        width: "100%",
+                        height: "200px",
+                        objectFit: "cover",
+                      }}
+                    />
+                    <div style={{ padding: "10px" }}>
+                      <h4
+                        style={{
+                          margin: 0,
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {pl.name}
+                      </h4>
+                      <p style={{ margin: "5px 0", color: "gray" }}>
+                        {pl.tracks.total} Songs
+                      </p>
+                      <a
+                        href={pl.external_urls.spotify}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className = "listen-button"
+                      >
+                        Open in Spotify
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+        
     </div>
   );
 }
