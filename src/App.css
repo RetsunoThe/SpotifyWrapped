@@ -13,6 +13,8 @@ html, body, #root {
   font-family: 'Josefin Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  overflow-x: hidden;
 }
 
 /* ======== TELA DE LOGIN ======== */
@@ -44,6 +46,14 @@ html, body, #root {
   margin-top: 20vh;
   
 }
+
+.logo {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fd6e88;
+  margin: 5px 5px 5px 5px;
+}
+
 
 .login-screen p {
   opacity: 1;
@@ -128,7 +138,6 @@ footer {
   animation-name: fade_in;
 
   margin-left:42vw;
-  margin-right:42vw;
   margin-top:95vh;
 
   position: absolute;
@@ -138,20 +147,16 @@ footer {
 /* ======== CONTEÚDO PRINCIPAL ======== */
 .app-container {
   padding: 2rem;
-  color: #fff;
-  font-family: "Poppins", sans-serif;
   background: linear-gradient(135deg, #000000, #a30031);
-  min-height: 100vh;
-  text-align: center;
 }
 
 .download-button {
 
   opacity: 1;
   margin-top: 20px;
-  background: #290016;
+  background: #1b000f;
   border: none;
-  color: white;
+  color: rgb(255, 172, 199);
   padding: 10px 20px;
   font-size: 1rem;
   border-radius: 12px;
@@ -159,13 +164,14 @@ footer {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  transform: translateY(-14vw);
+  transform: translateY(-9vw);
+  font-family: 'Josefin Sans', sans-serif;
 
 }
 
 .download-button:hover {
-  background: #3e0033;
-  transform: scale(1.05) translateY(-13vw);
+  background: #300027;
+  transform: scale(1.05) translateY(-9.25vw);
 }
 
 h1, h2 {
@@ -239,16 +245,16 @@ p {
   align-items: center;
   justify-content: center;
   gap: 50vw;
-  transform: translateY(-32vw);
+  transform: translateY(-28vw);
 
 }
 
 .slide-button {
   opacity: 1;
   margin-top: 20px;
-  background: #290016;
+  background: #1b000f;
   border: none;
-  color: white;
+  color: rgb(255, 172, 199);
   padding: 10px 20px;
   font-size: 1rem;
   border-radius: 100px;
@@ -368,12 +374,27 @@ a {
   animation-fill-mode: forwards;
 }
 
+.pop-in{
+  opacity: 0%;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
+  text-align: center;
+  animation-delay: 3s;
+  animation-name: popup;
+  animation-duration: 1s;
+  opacity: 0%;
+  animation-fill-mode: forwards;
+
+}
+
 .pop-out {
   font-size: 5rem;
   animation-duration: 3s;
   animation-name: pop-out-an;
   animation-fill-mode: forwards;
   position: absolute;
+  margin-bottom: 1000px;
   transform: translateY(20vh) translateX(17vw);
 }
 

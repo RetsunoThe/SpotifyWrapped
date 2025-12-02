@@ -56,7 +56,7 @@ export const APIController = (() => {
   const _getPlaylistByGenre = async (token, genreId) => {
     try {
       const result = await fetch(
-        `${apiBaseUrl}/browse/categories/${genreId}/playlists?limit=10`,
+        `${apiBaseUrl}/browse/categories/${genreId}/playlists?limit=16`,
         { headers: { Authorization: "Bearer " + token } }
       );
 

@@ -33,29 +33,35 @@ function updatePos(){
     if (slideCount === 1) {
         slideContainer.style.transform = `translateX(-18vw)`;
         collage2x2.style = `width: 30vw;
-                            transform: translateY(10vh);`;
+                            transform: translateY(20vh);`;
         collage3x3.style = `width: 40vw;
-                            transform: translateY(-10vh);`;
+                            transform: translateY(0vh);`;
         collage4x4.style = `width: 30vw;
-                            transform: translateY(10vh);`;
+                            transform: translateY(20vh);`;
+
+        document.getElementById("collage-toptext").textContent = "3x3 frame";
     }
     if (slideCount === 2) {
         slideContainer.style.transform = `translateX(-63vw)`;
         collage2x2.style = `width: 30vw;
-                            transform: translateY(10vh);`;
+                            transform: translateY(20vh);`;
         collage3x3.style = `width: 30vw;
-                            transform: translateY(10vh);`;
+                            transform: translateY(20vh);`;
         collage4x4.style = `width: 40vw;
-                            transform: translateY(-10vh);`;
+                            transform: translateY(0vh);`;
+
+        document.getElementById("collage-toptext").textContent = "4x4 frame";
     }
     if (slideCount === 0) {
         slideContainer.style.transform = `translateX(26vw)`;
         collage2x2.style = `width: 40vw;
-                            transform: translateY(-10vh);`;
+                            transform: translateY(0vh);`;
         collage3x3.style = `width: 30vw;
-                            transform: translateY(10vh);`;
+                            transform: translateY(20vh);`;
         collage4x4.style = `width: 30vw;
-                            transform: translateY(10vh);`;
+                            transform: translateY(20vh);`;
+
+        document.getElementById("collage-toptext").textContent = "2x2 frame";
     }
 }
 
@@ -171,12 +177,13 @@ const exportarColagem = async (id) => {
   if (!token) {
     return (
       <div className="login-screen">
+        <h2 className="logo">TUNECOLLAGE</h2>
         <h1>How's your music taste <br></br>going?</h1>
         <p>Click down below to generate your Spotify bundle.</p>
         <button onClick={login} className="login-button">
           Connect Spotify
         </button>
-        <footer>© {new Date().getFullYear()} Academic project</footer>
+        <footer>- © {new Date().getFullYear()} TuneCollage -</footer>
       </div>
     );
   }
@@ -185,9 +192,9 @@ const exportarColagem = async (id) => {
   return (
 
     
-      <div className="app-container">
-
-        <h1 className="pop-out"> Let's see the results!</h1>
+    <div className="app-container">
+      <h1 className="pop-out"> Let's see the results!</h1>
+      <div className="pop-in">
         {/* LOGOUT */}
         <div style={{ position: "fixed", top: "15px", right: "15px", zIndex: 9999 }}>
           <button
@@ -203,7 +210,8 @@ const exportarColagem = async (id) => {
               borderRadius: "8px",
               cursor: "pointer",
               fontWeight: "bold",
-              boxShadow: "0 4px 8px rgba(0,0,0,0.3)"
+              boxShadow: "0 4px 8px rgba(0,0,0,0.3)",
+              fontFamily: "'Josefin Sans', sans-serif"
             }}
           >
             Logout
@@ -218,7 +226,7 @@ const exportarColagem = async (id) => {
             Top Listened
           </button>
 
-          <button onClick={() => { setActiveSection("collages")}} className="toggle-button">
+          <button onClick={() => { setActiveSection("collages"); slideCount = 0; }} className="toggle-button">
             Album collage
           </button>
 
@@ -235,7 +243,7 @@ const exportarColagem = async (id) => {
         {/* ===================================================== */}
         {activeSection === "account" && (
           <section style={{ marginBottom: "30px" }}>
-            <h2></h2>
+            <h1>Top Listened</h1>
 
             <br />
 
@@ -287,7 +295,7 @@ const exportarColagem = async (id) => {
         {/* ===================================================== */}
         {activeSection === "collages" && (
           <>
-            <h1></h1>
+            <h1 id="collage-toptext">2x2 frame</h1>
             {/* COLAGEM 2x2 */}
             <div className="collage-layout" id="slideContainer">
               <section className="album-collage-section">
@@ -295,7 +303,6 @@ const exportarColagem = async (id) => {
                   <p>Carregando álbuns...</p>
                 ) : (
                   <>
-
                     <div id="collage-2x2" className="collage-grid grid-2x2">
                       {topTracks.slice(0, 4).map((track) => (
                         <img
@@ -338,19 +345,26 @@ const exportarColagem = async (id) => {
                 ) : (
                   <>
                     <div id="collage-4x4" className="collage-grid grid-4x4">
-                      {topTracks.slice(0, 16).map((track) => (
-                        <img
-                          key={track.id}
-                          src={track.album?.images?.[0]?.url}
-                          alt={track.name}
-                          className="collage-img"
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </section>
+                            {(() => {
+                              let images = topTracks.map((t) => t.album?.images?.[0]?.url).filter(Boolean);
 
+                              if (images.length < 16) {
+                                const repeat = [...images];
+                                while (images.length < 16 && repeat.length > 0) {
+                                  images.push(repeat[images.length % repeat.length]);
+                                }
+                              } else {
+                                images = images.slice(0, 16);
+                              }
+
+                              return images.map((img, index) => (
+                                <img key={index} src={img} alt={`album-${index}`} className="collage-img" />
+                              ));
+                            })()}
+                          </div>
+                        </>
+                      )}
+                    </section>
             </div>
 
             <div className="button-container">
@@ -368,7 +382,7 @@ const exportarColagem = async (id) => {
         {/* ===================================================== */}
         {activeSection === "playlists" && (
           <section>
-            <h2>My playlists</h2>
+            <h1>My playlists</h1>
             {loadingPlaylists ? (
               <p>Loading playlists</p>
             ) : playlists.length === 0 ? (
@@ -432,7 +446,7 @@ const exportarColagem = async (id) => {
             )}
           </section>
         )}
-        
+      </div>
     </div>
   );
 }
